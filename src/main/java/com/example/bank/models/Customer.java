@@ -1,10 +1,6 @@
 package com.example.bank.models;
 
-import jakarta.annotation.Nonnull;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity(name = "customers")
 public class Customer {
@@ -12,16 +8,17 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    @Nonnull
+    @Column(nullable = false, length = 50)
     String firstName;
-    @Nonnull
+    @Column(nullable = false, length = 50)
     String lastName;
-    @Nonnull
+    @Column(length = 20)
     String phone;
+    @Column(length = 50)
     String email;
     String address;
 
-    Customer() {
+    public Customer() {
 
     }
 
@@ -31,6 +28,10 @@ public class Customer {
         this.phone = phone;
         this.email = email;
         this.address = address;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public String getFirstName() {

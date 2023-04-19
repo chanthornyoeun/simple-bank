@@ -1,9 +1,14 @@
 package com.example.bank.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.util.Set;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity(name = "customers")
-public class Customer {
+public class Customer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +22,15 @@ public class Customer {
     @Column(length = 50)
     String email;
     String address;
+    @OneToMany(mappedBy = "customer")
+    Set<BankAccount> bankAccounts;
 
     public Customer() {
 
+    }
+
+    public Customer(long id) {
+        this.id = id;
     }
 
     public Customer(String firstName, String lastName, String phone, String email, String address) {

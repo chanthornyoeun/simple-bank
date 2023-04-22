@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity(name = "bank_accounts")
@@ -15,10 +16,17 @@ public class BankAccount implements Serializable {
     long id;
     @ManyToOne(fetch = FetchType.LAZY)
     Customer customer;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
     AccountType accountType;
+    @Column(nullable = false, length = 10, unique = true)
     String accountCode;
+    @Column(nullable = false)
     Date openingDate;
+    @Column(nullable = false)
     double balance;
+    @OneToMany(mappedBy = "bankAccount", fetch = FetchType.LAZY)
+    Set<AccountTransaction> accountTransactions;
 
     public BankAccount() {
     }

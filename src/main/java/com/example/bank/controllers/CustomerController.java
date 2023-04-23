@@ -5,22 +5,19 @@ import com.example.bank.repository.CustomerRepository;
 import com.example.bank.services.CustomerService;
 import com.example.bank.utils.ResponseDTO;
 import com.example.bank.utils.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/customers")
+@AllArgsConstructor
 public class CustomerController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomerController.class);
     private final CustomerRepository customerRepository;
     private final CustomerService customerService;
-
-    CustomerController(CustomerRepository customerRepository, CustomerService customerService) {
-        this.customerRepository = customerRepository;
-        this.customerService = customerService;
-    }
 
     @GetMapping
     ResponseDTO list() {
@@ -36,36 +33,21 @@ public class CustomerController {
     }
 
     @PostMapping
-    ResponseDTO save(@RequestBody Customer payload) {
-        try {
-            Customer customer = this.customerService.create(payload);
-            return ResponseUtil.object(customer, true, "Customer has been created.");
-        } catch (Exception ex) {
-            LOGGER.error("Error while creating customer: " + ex.getMessage());
-            return ResponseUtil.object(null, false, ex.getMessage());
-        }
+    ResponseDTO save(@RequestBody Map<String, Object> payload) {
+        Customer customer = this.customerService.create(payload);
+        return ResponseUtil.object(customer, true, "Customer has been created.");
     }
 
     @PutMapping("{id}")
-    ResponseDTO update(@PathVariable long id, @RequestBody Customer payload) {
-        try {
-            Customer customer = this.customerService.updateById(id, payload);
-            return ResponseUtil.object(customer, true, "Customer has been updated.");
-        } catch (Exception ex) {
-            LOGGER.error("Error while updating customer: " + id + " " + ex.getMessage());
-            return ResponseUtil.object(null, false, ex.getMessage());
-        }
+    ResponseDTO update(@PathVariable long id, @RequestBody Map<String, Object> payload) throws JsonMappingException {
+        Customer customer = this.customerService.updateById(id, payload);
+        return ResponseUtil.object(customer, true, "Customer has been updated.");
     }
 
     @DeleteMapping("{id}")
     ResponseDTO delete(@PathVariable long id) {
-        try {
-            Customer customer = this.customerService.deleteById(id);
-            return ResponseUtil.object(customer, true, "Customer has been deleted.");
-        } catch (Exception ex) {
-            LOGGER.error("Error while deleting customer: " + id + " " + ex.getMessage());
-            return ResponseUtil.object(null, false, ex.getMessage());
-        }
+        Customer customer = this.customerService.deleteById(id);
+        return ResponseUtil.object(customer, true, "Customer has been deleted.");
     }
 
 }

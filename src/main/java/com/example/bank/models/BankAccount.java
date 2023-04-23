@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity(name = "bank_accounts")
 @Getter @Setter @AllArgsConstructor @NoArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "accountTransactions"})
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "accountTransactions"}, ignoreUnknown = true)
 public class BankAccount extends AuditMetadata implements Serializable {
 
     @Id

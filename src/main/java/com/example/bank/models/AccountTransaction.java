@@ -2,11 +2,14 @@ package com.example.bank.models;
 
 import com.example.bank.enums.TransactionType;
 import jakarta.persistence.*;
+import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity(name = "account_transactions")
-public class AccountTransaction {
+@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+public class AccountTransaction extends AuditMetadata implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,43 +21,7 @@ public class AccountTransaction {
     private TransactionType transactionType;
     @Column(nullable = false)
     private double balance;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private BankAccount bankAccount;
 
-    public long getId() {
-        return id;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public TransactionType getTransactionType() {
-        return transactionType;
-    }
-
-    public void setTransactionType(TransactionType transactionType) {
-        this.transactionType = transactionType;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
-
-    public BankAccount getBankAccount() {
-        return bankAccount;
-    }
-
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
-    }
 }

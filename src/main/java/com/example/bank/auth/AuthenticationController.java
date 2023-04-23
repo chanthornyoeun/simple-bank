@@ -41,4 +41,15 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/logout")
+    ResponseEntity<ResponseDTO> logout() {
+        try {
+            ResponseDTO res = ResponseUtil.object(this.authenticationService.logout("API"), true, "Logged Out");
+            return ResponseEntity.ok(res);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.badRequest().body(ResponseUtil.object(null, false, ex.getMessage()));
+        }
+    }
+
 }

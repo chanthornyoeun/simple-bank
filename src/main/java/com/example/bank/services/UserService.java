@@ -4,6 +4,7 @@ import com.example.bank.dto.UserDTO;
 import com.example.bank.models.Role;
 import com.example.bank.models.User;
 import com.example.bank.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,9 +47,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    // TODO
     public User getCurrentUser() {
-        return null;
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 }
